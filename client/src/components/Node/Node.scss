@@ -4,4 +4,24 @@
     border: 1px solid black;
     display: inline-block;
     vertical-align: top;
+
+    &__start {
+        background-color: green;
+    }
+
+    &__finish {
+        background-color: red;
+    }
+
+    &__visited {
+        background-color: blue;
+    }
+
+    &__path {
+        background-color: yellow;
+    }
+    
+    &__barrier {
+        background-color: black;
+    }
 }

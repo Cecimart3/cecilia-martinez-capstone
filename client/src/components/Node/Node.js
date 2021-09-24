@@ -1,11 +1,6 @@
 import { Component } from 'react'
 import './Node.scss'
 
-const START_NODE_ROW = 10;
-const START_NODE_COL = 15;
-const FINISH_NODE_ROW = 10;
-const FINISH_NODE_COL = 35;
-
 class Node extends Component {
     render() {
         const {
@@ -13,13 +8,33 @@ class Node extends Component {
             row,
             isStart,
             isFinish,
-            isBarrier
+            isBarrier,
+            isVisited,
+            previousNode,
+            onMouseDown,
+            onMouseEnter,
+            onMouseUp,
+            mouseIsPressed,
+            nodeRef
         } = this.props
+
+        let nodeStatus = '';
+        if (isStart) {
+            nodeStatus = 'node__start'
+        } if (isFinish) {
+            nodeStatus = 'node__finish'
+        } if (isBarrier) {
+            nodeStatus = 'node__barrier'
+        } 
 
     return (
         <div 
-        id={`location = row:${row} column:${column}`}
-        className={'node'}>
+            id={`location row:${row} column:${column}`}
+            className={`node ${nodeStatus}`}
+            onMouseDown={() => onMouseDown(row, column)}
+            onMouseEnter={() => onMouseEnter(row, column)}
+            onMouseUp={() => onMouseUp()}
+            ref={nodeRef}>
         </div>
     )
     }
