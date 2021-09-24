@@ -11,7 +11,8 @@ const FINISH_NODE_COL = 35;
 class Grid extends Component {
     state = {
         grid: [],
-        mouseIsPressed: false
+        mouseIsPressed: false,
+        startIsMoving: false
     }
 
     componentDidMount() {
@@ -20,18 +21,31 @@ class Grid extends Component {
     }
 
     handleMouseDown = (row, column) => {
-        const newGrid = getNewGridWithWallToggled(this.state.grid, row, column);
-        this.setState({grid: newGrid, mouseIsPressed: true});
+        const node = findRef(this.state.grid, row, column);
+        let newGrid;
+        if (node.className.includes('node__start')) {
+            newGrid = getNewGridWithStartToggled(this.state.grid, row, column);
+            this.setState({grid: newGrid, mouseIsPressed: true, startIsMoving: true });
+        } else {
+            newGrid = getNewGridWithWallToggled(this.state.grid, row, column);
+            this.setState({grid: newGrid, mouseIsPressed: true});
+        } 
     }
     
     handleMouseEnter = (row, column) => {
         if (!this.state.mouseIsPressed) return;
+        if (this.state.startIsMoving) return;
         const newGrid = getNewGridWithWallToggled(this.state.grid, row, column);
         this.setState({grid: newGrid});
     }
     
-    handleMouseUp = () => {
-        this.setState({mouseIsPressed: false});
+    handleMouseUp = (row, column) => {
+        let newGrid;
+        console.log(row, column)
+        if (this.state.startIsMoving) {
+            newGrid = getNewGridWithStartToggled(this.state.grid, row, column);
+        }
+        this.setState({mouseIsPressed: false, grid: newGrid || this.state.grid, startIsMoving: false});
     }
     
     animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
@@ -60,7 +74,8 @@ class Grid extends Component {
     
     visualizeDijkstra() {
         const {grid} = this.state;
-        const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        //const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        const startNode = findStart(grid)
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
         const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
@@ -105,7 +120,7 @@ const createColumns = (nodes, mouseHandlers) => {
         mouseIsPressed={mouseHandlers.mouseIsPressed}
         onMouseDown={(row, column) => mouseHandlers.handleMouseDown(row, column)}
         onMouseEnter={(row, column) => mouseHandlers.handleMouseEnter(row, column)}
-        onMouseUp={() => mouseHandlers.handleMouseUp()}
+        onMouseUp={(row, column) => mouseHandlers.handleMouseUp(row, column)}
         nodeRef={node.nodeRef} />
     )
 }
@@ -141,6 +156,24 @@ const getNewGridWithWallToggled = (grid, row, column) => {
     };
     newGrid[row][column] = newNode;
     return newGrid;
+};
+
+const getNewGridWithStartToggled = (grid, row, column) => {
+    const newGrid = grid.slice();
+    const node = newGrid[row][column];
+    const newNode = {
+        ...node,
+        isStart: !node.isStart,
     };
+    newGrid[row][column] = newNode;
+    return newGrid;
+};
 
+const findRef = (grid, row, column) => {
+    return grid[row][column].nodeRef.current
+}
 
+const findStart = (grid) => {
+    const rowIdx = grid.findIndex(row => row.some(data => data.isStart))
+    return grid[rowIdx].find(data => data.isStart)
+}

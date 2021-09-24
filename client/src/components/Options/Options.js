@@ -3,7 +3,15 @@ import './Options.scss'
 const Options = () => {
     return (
         <div className='options'>
-            Options
+            <button> 
+                Start Point
+            </button>
+            <button> 
+                Walls
+            </button>
+            <button> 
+                End Point
+            </button>
         </div>
     )
 }

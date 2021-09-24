@@ -9,12 +9,9 @@ class Node extends Component {
             isStart,
             isFinish,
             isBarrier,
-            isVisited,
-            previousNode,
             onMouseDown,
             onMouseEnter,
             onMouseUp,
-            mouseIsPressed,
             nodeRef
         } = this.props
 
@@ -33,8 +30,8 @@ class Node extends Component {
             className={`node ${nodeStatus}`}
             onMouseDown={() => onMouseDown(row, column)}
             onMouseEnter={() => onMouseEnter(row, column)}
-            onMouseUp={() => onMouseUp()}
-            ref={nodeRef}>
+            onMouseUp={() => onMouseUp(row, column)}
+            ref={nodeRef }>
         </div>
     )
     }

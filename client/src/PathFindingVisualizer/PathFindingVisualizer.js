@@ -1,5 +1,4 @@
 import './PathFindingVisualizer.scss'
-import Node from '../components/Node/Node'
 import { Component } from 'react'
 import Grid from '../components/Grid/Grid'
 

@@ -7,10 +7,15 @@
 
     &__start {
         background-color: green;
+        content: '1';
     }
 
     &__finish {
         background-color: red;
+        &::before {
+            content: '2';
+        }
+        
     }
 
     &__visited {
