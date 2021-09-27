@@ -1,16 +1,21 @@
+import { generateEllerMaze } from '../../algorithms/mazeGenerator'
 import './Options.scss'
 
-const Options = () => {
+const Options = ({ start, maze }) => {
     return (
         <div className='options'>
-            <button> 
-                Start Point
+            <div> 
+                <p>Algorithm:</p>
+                <p>Dijkstra's</p> 
+            </div>
+            <button>
+                Clear Board
             </button>
-            <button> 
-                Walls
+            <button onClick={maze}>
+                Generate Maze
             </button>
-            <button> 
-                End Point
+            <button onClick={start}>
+                Start
             </button>
         </div>
     )

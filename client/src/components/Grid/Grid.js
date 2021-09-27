@@ -2,6 +2,8 @@ import './Grid.scss'
 import { Component, createRef } from 'react'
 import Node from '../Node/Node'
 import { dijkstra, getNodesInShortestPathOrder } from '../../algorithms/dijkstra'
+import Options from '../Options/Options';
+import { generateEllerMaze } from '../../algorithms/mazeGenerator';
 
 const START_NODE_ROW = 10;
 const START_NODE_COL = 5;
@@ -12,7 +14,8 @@ class Grid extends Component {
     state = {
         grid: [],
         mouseIsPressed: false,
-        startIsMoving: false
+        startIsMoving: false,
+        finishIsMoving: false
     }
 
     componentDidMount() {
@@ -26,6 +29,9 @@ class Grid extends Component {
         if (node.className.includes('node__start')) {
             newGrid = getNewGridWithStartToggled(this.state.grid, row, column);
             this.setState({grid: newGrid, mouseIsPressed: true, startIsMoving: true });
+        } else if (node.className.includes('node__finish')) {
+            newGrid = getNewGridWithFinishToggled(this.state.grid, row, column);
+            this.setState({grid: newGrid, mouseIsPressed: true, finishIsMoving: true });
         } else {
             newGrid = getNewGridWithWallToggled(this.state.grid, row, column);
             this.setState({grid: newGrid, mouseIsPressed: true});
@@ -35,6 +41,7 @@ class Grid extends Component {
     handleMouseEnter = (row, column) => {
         if (!this.state.mouseIsPressed) return;
         if (this.state.startIsMoving) return;
+        if (this.state.finishIsMoving) return;
         const newGrid = getNewGridWithWallToggled(this.state.grid, row, column);
         this.setState({grid: newGrid});
     }
@@ -44,8 +51,11 @@ class Grid extends Component {
         console.log(row, column)
         if (this.state.startIsMoving) {
             newGrid = getNewGridWithStartToggled(this.state.grid, row, column);
+        } if (this.state.finishIsMoving) {
+            newGrid = getNewGridWithFinishToggled(this.state.grid, row, column);
         }
-        this.setState({mouseIsPressed: false, grid: newGrid || this.state.grid, startIsMoving: false});
+        this.setState({mouseIsPressed: false, grid: newGrid || this.state.grid, startIsMoving: false, finishIsMoving: false});
+        console.log(newGrid)
     }
     
     animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
@@ -76,10 +86,15 @@ class Grid extends Component {
         const {grid} = this.state;
         //const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const startNode = findStart(grid)
-        const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+        //const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+        const finishNode = findFinish(grid)
         const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
         const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
         this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+    }
+
+    generateMaze = () => {
+        this.setState({grid: generateEllerMaze(this.state.grid)})
     }
 
 
@@ -88,9 +103,10 @@ class Grid extends Component {
 
         return (
             <>
-              <button onClick={() => this.visualizeDijkstra()}>
-                    start
-                </button>
+              <Options 
+                start={() => this.visualizeDijkstra()}
+                maze={this.generateMaze}/>
+            
                 <div className='grid'>
                     { createGrid(grid, 
                         {mouseIsPressed, 
@@ -148,26 +164,37 @@ const gridModel = () => Array(20).fill(null).map((row, rowIdx) =>
 )
 
 const getNewGridWithWallToggled = (grid, row, column) => {
-    const newGrid = grid.slice();
-    const node = newGrid[row][column];
+    const newGrid = grid.slice()
+    const node = newGrid[row][column]
     const newNode = {
         ...node,
         isBarrier: !node.isBarrier,
     };
-    newGrid[row][column] = newNode;
-    return newGrid;
-};
+    newGrid[row][column] = newNode
+    return newGrid
+}
 
 const getNewGridWithStartToggled = (grid, row, column) => {
-    const newGrid = grid.slice();
-    const node = newGrid[row][column];
+    const newGrid = grid.slice()
+    const node = newGrid[row][column]
     const newNode = {
         ...node,
         isStart: !node.isStart,
     };
-    newGrid[row][column] = newNode;
-    return newGrid;
-};
+    newGrid[row][column] = newNode
+    return newGrid
+}
+
+const getNewGridWithFinishToggled = (grid, row, column) => {
+    const newGrid = grid.slice()
+    const node = newGrid[row][column]
+    const newNode = {
+        ...node,
+        isFinish: !node.isFinish,
+    };
+    newGrid[row][column] = newNode
+    return newGrid
+}
 
 const findRef = (grid, row, column) => {
     return grid[row][column].nodeRef.current
@@ -176,4 +203,9 @@ const findRef = (grid, row, column) => {
 const findStart = (grid) => {
     const rowIdx = grid.findIndex(row => row.some(data => data.isStart))
     return grid[rowIdx].find(data => data.isStart)
+}
+
+const findFinish = (grid) => {
+    const rowIdx = grid.findIndex(row => row.some(data => data.isFinish))
+    return grid[rowIdx].find(data => data.isFinish)
 }

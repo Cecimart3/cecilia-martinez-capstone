@@ -8,13 +8,19 @@
     &__start {
         background-color: green;
         content: '1';
+        background-image: url('../../airplane.png');
+        background-size: cover;
     }
 
     &__finish {
         background-color: red;
-        &::before {
-            content: '2';
-        }
+        background-image: url('../../end-point.jpeg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        // &::before {
+        //     content: '2';
+            
+        // }
         
     }
 
@@ -28,5 +34,73 @@
     
     &__barrier {
         background-color: black;
+        // background-image: url('../../asteroid.jpeg');
+        // background-size: cover;
     }
+
+    &__visited {
+        animation-name: visitedAnimation;
+        animation-duration: 1.5s;
+        animation-timing-function: ease-out;
+        animation-delay: 0;
+        animation-direction: alternate;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+        animation-play-state: running;
+      }
+      
+      @keyframes visitedAnimation {
+        0% {
+          transform: scale(0.3);
+          background-color: #ffbc42;
+          border-radius: 100%;
+        }
+      
+        50% {
+          background-color: #d81159;
+        }
+      
+        75% {
+          transform: scale(1.2);
+          background-color: #8f2d56;
+        }
+      
+        100% {
+          transform: scale(1);
+          background-color: #218380;
+        }
+      }
+      
+      &__barrier {
+        background-color: rgb(12, 53, 71);
+      }
+      
+      &__path {
+        animation-name: shortestPath;
+        animation-duration: 1.5s;
+        animation-timing-function: ease-out;
+        animation-delay: 0;
+        animation-direction: alternate;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+        animation-play-state: running;
+      }
+      
+      @keyframes shortestPath {
+        0% {
+          transform: scale(0.6);
+          background-color: rgb(255, 254, 106);
+        }
+      
+        50% {
+          transform: scale(1.2);
+          background-color: rgb(255, 254, 106);
+        }
+      
+        100% {
+          transform: scale(1);
+          background-color: rgb(255, 254, 106);
+        }
+      }
+      
 }
