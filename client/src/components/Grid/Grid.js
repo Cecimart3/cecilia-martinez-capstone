@@ -55,7 +55,6 @@ class Grid extends Component {
             newGrid = getNewGridWithFinishToggled(this.state.grid, row, column);
         }
         this.setState({mouseIsPressed: false, grid: newGrid || this.state.grid, startIsMoving: false, finishIsMoving: false});
-        console.log(newGrid)
     }
     
     animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
@@ -68,7 +67,17 @@ class Grid extends Component {
                 }
                 setTimeout(() => {
                     const node = visitedNodesInOrder[i];
-                    node.nodeRef.current.className = 'node node__visited'
+                    if (i === 0) {
+                        node.nodeRef.current.className = 'node node__visited node__start' 
+                    } else if (i === (visitedNodesInOrder.length -1)) {
+                        node.nodeRef.current.className = 'node node__visited node__finish'
+                    } else {
+                        node.nodeRef.current.className = 'node node__visited'
+                    }
+                   
+                    //console.log(node)
+                    //node[0] ? node.nodeRef.current.className = 'node node__visited node__start' :
+                    //node.nodeRef.current.className = 'node node__visited'
                     }, 10 * i);
         }
     }
@@ -77,45 +86,64 @@ class Grid extends Component {
         for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
             setTimeout(() => {
                 const node = nodesInShortestPathOrder[i];
-                node.nodeRef.current.className = 'node node__path'
+                
+                node.nodeRef.current.className = 'node node__path node__start' 
+                if (i) {
+                    const previousNode = nodesInShortestPathOrder[i-1];
+                    previousNode.nodeRef.current.className = 'node node__path'
+                }
             }, 50 * i);
         }
     }
     
     visualizeDijkstra() {
-        const {grid} = this.state;
+        const {grid} = this.state
         //const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const startNode = findStart(grid)
         //const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         const finishNode = findFinish(grid)
-        const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
-        const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-        this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+        const visitedNodesInOrder = dijkstra(grid, startNode, finishNode)
+        const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode)
+        this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder)
     }
 
     generateMaze = () => {
         this.setState({grid: generateEllerMaze(this.state.grid)})
+    } 
+
+    clearGrid = () => {
+        const grid = gridModel()
+        this.setState({ grid }, () => {this.state.grid.forEach(row => 
+            row.forEach(data => {
+                if (data.isStart) {
+                    data.nodeRef.current.className = 'node node__start'
+                } else if (data.isFinish) {
+                    data.nodeRef.current.className = 'node node__finish'
+                } else data.nodeRef.current.className = 'node'}))})
+        
     }
 
 
     render() {
-        const { grid, mouseIsPressed } = this.state;
+        const { grid, mouseIsPressed } = this.state
 
         return (
-            <>
+            <main className='main'>
               <Options 
                 start={() => this.visualizeDijkstra()}
-                maze={this.generateMaze}/>
+                maze={this.generateMaze}
+                clearGrid={this.clearGrid}/>
             
-                <div className='grid'>
-                    { createGrid(grid, 
-                        {mouseIsPressed, 
-                        handleMouseDown: this.handleMouseDown,
-                        handleMouseEnter: this.handleMouseEnter,
-                        handleMouseUp: this.handleMouseUp}) }
-                    {/* {grid} */}
+                <div className='main__grid'>
+        
+                        { createGrid(grid, 
+                            {mouseIsPressed, 
+                            handleMouseDown: this.handleMouseDown,
+                            handleMouseEnter: this.handleMouseEnter,
+                            handleMouseUp: this.handleMouseUp}) }
+                    
                 </div>
-            </>
+            </main>
         )
     }
 }

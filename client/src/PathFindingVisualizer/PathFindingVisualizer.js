@@ -8,7 +8,7 @@ class PathFindingVisualizer extends Component {
     
     render() {
         return (
-            <div>
+            <div className='grid__container'>
                 <Grid />
             </div>
         )

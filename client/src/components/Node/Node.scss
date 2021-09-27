@@ -1,22 +1,24 @@
 .node {
     height: 1.5rem;
     width: 1.5rem;
-    border: 1px solid black;
+    border: .5px solid lightgray;
+    background-color: #fff;
     display: inline-block;
     vertical-align: top;
 
     &__start {
-        background-color: green;
-        content: '1';
+        // background-color: green;
+        //content: '1';
         background-image: url('../../airplane.png');
         background-size: cover;
     }
 
     &__finish {
-        background-color: red;
-        background-image: url('../../end-point.jpeg');
-        background-size: cover;
+        // background-color: red;
+        background-image: url('../../end-point.png');
+        background-size: 100% 100%;
         background-repeat: no-repeat;
+
         // &::before {
         //     content: '2';
             
@@ -84,6 +86,7 @@
         animation-iteration-count: 1;
         animation-fill-mode: forwards;
         animation-play-state: running;
+        background-image: url('../../airplane.png');
       }
       
       @keyframes shortestPath {
