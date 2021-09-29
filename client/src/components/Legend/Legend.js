@@ -26,3 +26,5 @@ const Legend = () => {
         </div>
     )
 }
+
+export default Legend

@@ -20,3 +20,7 @@
     @include text(1.5rem, 700, 2rem)
 }
 
+@mixin body-text {
+    @include text(1rem, 500, 1.25rem)
+}
+

@@ -1,5 +1,51 @@
+@use '../../styles/mixins' as *;
+@use '../../styles/variables' as *;
+
 .legend {
     height: 4rem;
+    width: 80%;
     border: .25rem solid black;
     padding: 1rem;
+    display: flex;
+    margin-top: 1rem;
+
+    &__item {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 100%;
+        @include body-text
+    }
+
+    &__start {
+        background-image: url('../../assets/images/airplane.png');
+        height: 1.5rem;
+        width: 1.5rem;
+        background-size: cover;
+    }
+
+    &__search {
+        height: 1.5rem;
+        width: 1.5rem;
+        background-color: $searched-color;
+    }
+
+    &__barrier {
+        height: 1.5rem;
+        width: 1.5rem;
+        background-color: $barrier-color;
+    }
+
+    &__path {
+        height: 1.5rem;
+        width: 1.5rem;
+        background-color: $path-color;
+    }
+
+    &__end {
+        height: 1.5rem;
+        width: 1.5rem;
+        background-image: url('../../assets/images/end-point.png');
+        background-size: 100% 100%;
+    }
 }

@@ -1,3 +1,5 @@
+@use '../../styles/variables.scss' as *;
+
 .node {
     height: 1.5rem;
     width: 1.5rem;
@@ -69,12 +71,12 @@
       
         100% {
           transform: scale(1);
-          background-color: #218380;
+          background-color: $searched-color;
         }
       }
       
       &__barrier {
-        background-color: rgb(12, 53, 71);
+        background-color: $barrier-color;
       }
       
       &__path {
@@ -92,17 +94,17 @@
       @keyframes shortestPath {
         0% {
           transform: scale(0.6);
-          background-color: rgb(255, 254, 106);
+          background-color: $path-color;
         }
       
         50% {
           transform: scale(1.2);
-          background-color: rgb(255, 254, 106);
+          background-color: $path-color;
         }
       
         100% {
           transform: scale(1);
-          background-color: rgb(255, 254, 106);
+          background-color: $path-color;
         }
       }
       

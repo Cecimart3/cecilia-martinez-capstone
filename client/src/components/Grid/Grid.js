@@ -5,6 +5,7 @@ import { dijkstra, getNodesInShortestPathOrder } from '../../algorithms/dijkstra
 import Options from '../Options/Options';
 import { generateEllerMaze } from '../../algorithms/mazeGenerator';
 import Results from '../Results/Results';
+import Legend from '../Legend/Legend';
 
 const START_NODE_ROW = 10;
 const START_NODE_COL = 5;
@@ -155,6 +156,7 @@ class Grid extends Component {
                 </div>
                 {grid && <Results searched={searchedNodes}
                             path={path}/>}
+                <Legend />
             </main>
         )
     }
