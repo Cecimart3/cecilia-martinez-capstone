@@ -1,0 +1,22 @@
+@use 'typography' as *;
+
+// Fonts //
+@mixin text($fontsize, $fontweight, $lineheight) {
+    font-family: 'Gemunu';
+    font-size: $fontsize;
+    font-weight: $fontweight;
+    line-height: $lineheight;
+}
+
+@mixin header-text {
+    @include text(3rem, 700, 4rem)
+}
+
+@mixin subheader-text {
+    @include text(1.5rem, 500, 2rem)
+}
+
+@mixin subheader-bold-text {
+    @include text(1.5rem, 700, 2rem)
+}
+

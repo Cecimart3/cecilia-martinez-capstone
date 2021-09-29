@@ -1,5 +1,31 @@
+@use '../../styles/mixins' as *;
+
 .header {
     height: 3rem;
-    background-color: darkblue;
-    color: white
+    width: 100%;
+    display: flex;
+    align-items: baseline;
+
+    &__title {
+        @include header-text;
+        text-align: center;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-left: 2rem;
+    }
+
+    &__link {
+        @include subheader-text;
+        display: flex;
+        justify-content: center;
+        margin-right: 2rem;
+        width: 5rem;
+
+        &:hover {
+            border-bottom: .5rem solid black;
+        }
+
+    }
+    
 }
