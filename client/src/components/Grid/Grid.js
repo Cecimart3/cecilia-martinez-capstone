@@ -4,6 +4,7 @@ import Node from '../Node/Node'
 import { dijkstra, getNodesInShortestPathOrder } from '../../algorithms/dijkstra'
 import Options from '../Options/Options';
 import { generateEllerMaze } from '../../algorithms/mazeGenerator';
+import Results from '../Results/Results';
 
 const START_NODE_ROW = 10;
 const START_NODE_COL = 5;
@@ -15,8 +16,12 @@ class Grid extends Component {
         grid: [],
         mouseIsPressed: false,
         startIsMoving: false,
-        finishIsMoving: false
+        finishIsMoving: false,
+        searchedNodes: 0,
+        path: 0
     }
+
+    // searchedNodes = createRef();
 
     componentDidMount() {
         const grid = gridModel();
@@ -48,7 +53,7 @@ class Grid extends Component {
     
     handleMouseUp = (row, column) => {
         let newGrid;
-        console.log(row, column)
+        //console.log(row, column)
         if (this.state.startIsMoving) {
             newGrid = getNewGridWithStartToggled(this.state.grid, row, column);
         } if (this.state.finishIsMoving) {
@@ -66,6 +71,7 @@ class Grid extends Component {
                 return;
                 }
                 setTimeout(() => {
+                    //this.searchedNodes.current = `${visitedNodesInOrder} nodes searched.`
                     const node = visitedNodesInOrder[i];
                     if (i === 0) {
                         node.nodeRef.current.className = 'node node__visited node__start' 
@@ -104,7 +110,9 @@ class Grid extends Component {
         const finishNode = findFinish(grid)
         const visitedNodesInOrder = dijkstra(grid, startNode, finishNode)
         const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode)
-        this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder)
+        this.setState({searchedNodes: visitedNodesInOrder.length, path: nodesInShortestPathOrder.length}, () => {
+            this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder)
+        })
     }
 
     generateMaze = () => {
@@ -123,26 +131,30 @@ class Grid extends Component {
         
     }
 
+    searchedNodes = () => {
+                              
+    }
+
 
     render() {
-        const { grid, mouseIsPressed } = this.state
+        const { grid, mouseIsPressed, searchedNodes, path } = this.state
+        console.log(grid)
 
         return (
             <main className='main'>
-              <Options 
-                start={() => this.visualizeDijkstra()}
-                maze={this.generateMaze}
-                clearGrid={this.clearGrid}/>
-            
+                <Options 
+                    start={() => this.visualizeDijkstra()}
+                    maze={this.generateMaze}
+                    clearGrid={this.clearGrid}/>
                 <div className='main__grid'>
-        
-                        { createGrid(grid, 
-                            {mouseIsPressed, 
-                            handleMouseDown: this.handleMouseDown,
-                            handleMouseEnter: this.handleMouseEnter,
-                            handleMouseUp: this.handleMouseUp}) }
-                    
+                    { createGrid(grid, 
+                        {mouseIsPressed, 
+                        handleMouseDown: this.handleMouseDown,
+                        handleMouseEnter: this.handleMouseEnter,
+                        handleMouseUp: this.handleMouseUp}) }  
                 </div>
+                {grid && <Results searched={searchedNodes}
+                            path={path}/>}
             </main>
         )
     }

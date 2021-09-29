@@ -1,7 +1,7 @@
 import './Options.scss'
 
 const Options = ({ start, maze, clearGrid }) => {
-    console.log(clearGrid)
+
     return (
         <div className='options'>
             <div className='options__description'> 

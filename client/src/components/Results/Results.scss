@@ -1,0 +1,14 @@
+@use '../../styles/mixins' as *;
+
+.results {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: .25rem solid black;
+    padding: .5rem;
+
+    &__info {
+        @include subheader-text;
+    }
+}

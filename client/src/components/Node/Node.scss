@@ -9,13 +9,13 @@
     &__start {
         // background-color: green;
         //content: '1';
-        background-image: url('../../airplane.png');
+        background-image: url('../../assets/images/airplane.png');
         background-size: cover;
     }
 
     &__finish {
         // background-color: red;
-        background-image: url('../../end-point.png');
+        background-image: url('../../assets/images/end-point.png');
         background-size: 100% 100%;
         background-repeat: no-repeat;
 
@@ -86,7 +86,7 @@
         animation-iteration-count: 1;
         animation-fill-mode: forwards;
         animation-play-state: running;
-        background-image: url('../../airplane.png');
+        background-image: url('../../assets/images/airplane.png');
       }
       
       @keyframes shortestPath {
