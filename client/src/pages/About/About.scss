@@ -1,0 +1,37 @@
+@use '../../styles/mixins' as *;
+
+.about {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 3rem;
+   
+    &__title {
+        @include header-text;
+        margin-bottom: 2rem;
+    }
+
+    &__subtitle {
+        @include subheader-text;
+        margin-bottom: 2rem;
+        border-bottom: 2px solid black;
+        padding-bottom: 1rem;
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+    }
+
+    &__algorithm-title {
+        @include subheader-bold-text;
+        margin-bottom: 1rem;
+        
+    }
+
+    &__info {
+        @include body-text;
+        margin-bottom: 1rem;
+        width: 80%;
+    }
+}

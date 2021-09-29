@@ -12,7 +12,9 @@
         width: 100%;
         display: flex;
         justify-content: center;
-        margin-left: 2rem;
+        padding-left: 7rem;
+        text-decoration: none;
+        color: black;
     }
 
     &__link {
@@ -21,6 +23,8 @@
         justify-content: center;
         margin-right: 2rem;
         width: 5rem;
+        text-decoration: none;
+        color: black;
 
         &:hover {
             border-bottom: .5rem solid black;

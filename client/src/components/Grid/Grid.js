@@ -122,7 +122,7 @@ class Grid extends Component {
 
     clearGrid = () => {
         const grid = gridModel()
-        this.setState({ grid }, () => {this.state.grid.forEach(row => 
+        this.setState({ grid, searchedNodes: 0, path: 0 }, () => {this.state.grid.forEach(row => 
             row.forEach(data => {
                 if (data.isStart) {
                     data.nodeRef.current.className = 'node node__start'
@@ -130,10 +130,6 @@ class Grid extends Component {
                     data.nodeRef.current.className = 'node node__finish'
                 } else data.nodeRef.current.className = 'node'}))})
         
-    }
-
-    searchedNodes = () => {
-                              
     }
 
 

@@ -1,11 +1,16 @@
 import './Header.scss'
+import { NavLink } from 'react-router-dom'
 
 
 const Header = () => {
     return (
         <header className='header'>
-            <h1 className='header__title'>Pathfinding Visualizer</h1>
-            <div className='header__link'>About</div>
+            <NavLink to='/' className='header__title'>
+                Pathfinding Visualizer
+            </NavLink>
+            <NavLink to='/about' className='header__link'>
+                About
+            </NavLink>
         </header>
     )
 }
