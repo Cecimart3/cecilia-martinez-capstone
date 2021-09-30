@@ -6,6 +6,7 @@ import Options from '../Options/Options';
 import { generateEllerMaze } from '../../algorithms/mazeGenerator';
 import Results from '../Results/Results';
 import Legend from '../Legend/Legend';
+import visualizerRequests from '../../utilities/apiCalls';
 
 const START_NODE_ROW = 10;
 const START_NODE_COL = 5;
@@ -21,8 +22,6 @@ class Grid extends Component {
         searchedNodes: 0,
         path: 0
     }
-
-    // searchedNodes = createRef();
 
     componentDidMount() {
         const grid = gridModel();
@@ -54,7 +53,6 @@ class Grid extends Component {
     
     handleMouseUp = (row, column) => {
         let newGrid;
-        //console.log(row, column)
         if (this.state.startIsMoving) {
             newGrid = getNewGridWithStartToggled(this.state.grid, row, column);
         } if (this.state.finishIsMoving) {
@@ -72,7 +70,6 @@ class Grid extends Component {
                 return;
                 }
                 setTimeout(() => {
-                    //this.searchedNodes.current = `${visitedNodesInOrder} nodes searched.`
                     const node = visitedNodesInOrder[i];
                     if (i === 0) {
                         node.nodeRef.current.className = 'node node__visited node__start' 
@@ -81,10 +78,6 @@ class Grid extends Component {
                     } else {
                         node.nodeRef.current.className = 'node node__visited'
                     }
-                   
-                    //console.log(node)
-                    //node[0] ? node.nodeRef.current.className = 'node node__visited node__start' :
-                    //node.nodeRef.current.className = 'node node__visited'
                     }, 10 * i);
         }
     }
@@ -93,7 +86,6 @@ class Grid extends Component {
         for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
             setTimeout(() => {
                 const node = nodesInShortestPathOrder[i];
-                
                 node.nodeRef.current.className = 'node node__path node__start' 
                 if (i) {
                     const previousNode = nodesInShortestPathOrder[i-1];
@@ -105,9 +97,7 @@ class Grid extends Component {
     
     visualizeDijkstra() {
         const {grid} = this.state
-        //const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const startNode = findStart(grid)
-        //const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         const finishNode = findFinish(grid)
         const visitedNodesInOrder = dijkstra(grid, startNode, finishNode)
         const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode)
@@ -121,21 +111,21 @@ class Grid extends Component {
     } 
 
     clearGrid = () => {
-        const grid = gridModel()
-        this.setState({ grid, searchedNodes: 0, path: 0 }, () => {this.state.grid.forEach(row => 
-            row.forEach(data => {
-                if (data.isStart) {
-                    data.nodeRef.current.className = 'node node__start'
-                } else if (data.isFinish) {
-                    data.nodeRef.current.className = 'node node__finish'
-                } else data.nodeRef.current.className = 'node'}))})
-        
+        const { searchedNodes, path } = this.state
+        visualizerRequests.postGridResults({ searchedNodes, path }).then(() => {
+            const grid = gridModel()
+            this.setState({ grid, searchedNodes: 0, path: 0 }, () => {this.state.grid.forEach(row => 
+                row.forEach(data => {
+                    if (data.isStart) {
+                        data.nodeRef.current.className = 'node node__start'
+                    } else if (data.isFinish) {
+                        data.nodeRef.current.className = 'node node__finish'
+                    } else data.nodeRef.current.className = 'node'}))})    
+        })
     }
-
 
     render() {
         const { grid, mouseIsPressed, searchedNodes, path } = this.state
-        console.log(grid)
 
         return (
             <main className='main'>
