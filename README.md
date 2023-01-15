@@ -2,7 +2,7 @@
 
 A visualization tool used to demonstrate the power of Dijkstra’s algorithm, built using Javascript, React, and Sass
 
-### SEE IT LIVE: https://capstone-cmm.herokuapp.com/
+### SEE IT LIVE: https://pathfinding-visualizer-omega.vercel.app/
 
 Project Status
 Phase 1 of the project is complete.
